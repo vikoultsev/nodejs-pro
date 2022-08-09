@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Flower {
+  id       Int               @id @default(autoincrement())
+  name     String            @unique()
+}
+
+model Bouquet {
+  id          Int               @id @default(autoincrement())
+  image       String
+  name        String
+  description String?
+  price       Int
+  flowers     Int[]
+  orders      BouquetInOrder[]
+}
+
+model Postcard {
+  id     Int               @id @default(autoincrement())
+  image  String
+  orders PostcardInOrder[]
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+}
+
+model Order {
+  id           Int               @id @default(autoincrement())
+  address      String
+  bouquets     BouquetInOrder[]
+  postcard     PostcardInOrder[]
+  postcardText String?
+  totalAmount  Int
+  status       OrderStatus       @default(PENDING)
+  createdAt    DateTime          @default(now())
+}
+
+model BouquetInOrder {
+  id        Int     @id @default(autoincrement())
+  bouquet   Bouquet @relation(fields: [bouquetId], references: [id])
+  bouquetId Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+}
+
+model PostcardInOrder {
+  id         Int      @id @default(autoincrement())
+  postcard   Postcard @relation(fields: [postcardId], references: [id])
+  postcardId Int
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+}

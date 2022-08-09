@@ -1,0 +1,46 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+const flowers = [
+	{
+		name: 'Tulip',
+	},
+	{
+		name: 'Rose',
+	},
+	{
+		name: 'Orchid',
+	},
+	{
+		name: 'Petunia',
+	},
+]
+
+const bouquets = [{
+	image: 'https://i1.fnp.sg/images/pr/x/v20210926165242/10-purple-tulip-arrangement_1.jpg',
+  	name: 'Purple Tulip Arrangement',
+  	description: 'The tulip originated centuries ago in Persia and Turkey, where it played a significant role in the art and culture of the time. The meaning of purple flowers historically alludes to royalty. They are often used to express admiration for a loved one’s accomplishments.',
+	price: 79
+}]
+
+async function main() {
+	try {
+		await prisma.$connect();
+		await prisma.flower.createMany({
+			data: flowers,
+		});
+		const flowersFromDB = await prisma.flower.findMany({});
+		await prisma.bouquet.createMany({
+			data: bouquets.map(b => ({
+				...b,
+				flowers: flowersFromDB.filter(f => f.name === 'Tulip').map(i => i.id),
+			})),
+		});
+	} catch (error) {
+		console.log(error);
+	}
+	
+}
+
+main();
