@@ -32,11 +32,12 @@ async function main() {
 		});
 		const flowersFromDB = await prisma.flower.findMany({});
 		await prisma.bouquet.createMany({
-			data: bouquets.map(b => ({
-				...b,
-				flowers: flowersFromDB.filter(f => f.name === 'Tulip').map(i => i.id),
+			data: bouquets.map(bouquet => ({
+				...bouquet,
+				flowers: flowersFromDB.filter(flower => flower.name === 'Tulip').map(flower => flower.id),
 			})),
 		});
+		await prisma.$disconnect();
 	} catch (error) {
 		console.log(error);
 	}
