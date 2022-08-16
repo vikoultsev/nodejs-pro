@@ -6,10 +6,11 @@
   "type": "commonjs",
   "scripts": {
     "init": "npm ci && npx prisma generate && npx prisma migrate dev",
-    "start": "rimraf ./dist && tsc && node dist/index.js",
+    "seed": "node dist/seed.js",
+    "start": "node dist/index.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "rimraf ./dist && tsc"
   },
   "author": "Oleg",
   "license": "ISC",
