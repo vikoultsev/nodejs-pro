@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Flower {
-  id       Int               @id @default(autoincrement())
-  name     String            @unique()
+  id   Int    @id @default(autoincrement())
+  name String @unique()
 }
 
 model Bouquet {
-  id          Int               @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   image       String
   name        String
   description String?
@@ -44,8 +44,10 @@ model Order {
   postcard     PostcardInOrder[]
   postcardText String?
   totalAmount  Int
+  client       Client            @relation(fields: [clientId], references: [id])
   status       OrderStatus       @default(PENDING)
   createdAt    DateTime          @default(now())
+  clientId     Int
 }
 
 model BouquetInOrder {
@@ -62,4 +64,11 @@ model PostcardInOrder {
   postcardId Int
   order      Order    @relation(fields: [orderId], references: [id])
   orderId    Int
+}
+
+model Client {
+  id      Int     @unique
+  city    String
+  address String
+  orders  Order[]
 }
