@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import { IPrismaService } from '../types';
 
-export class PrismaService {
+export class PrismaService implements IPrismaService {
 	client: PrismaClient;
 
 	constructor() {
@@ -15,6 +16,7 @@ export class PrismaService {
 			if (e instanceof Error) {
 				console.error('Ошибка подключения к базе данных: ' + e.message);
 			}
+			throw e;
 		}
 	}
 

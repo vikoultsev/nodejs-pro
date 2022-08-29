@@ -44,10 +44,10 @@ model Order {
   postcard     PostcardInOrder[]
   postcardText String?
   totalAmount  Int
-  client       Client            @relation(fields: [clientId], references: [id])
+  client       User            @relation(fields: [userId], references: [id])
   status       OrderStatus       @default(PENDING)
   createdAt    DateTime          @default(now())
-  clientId     Int
+  userId     Int
 }
 
 model BouquetInOrder {
@@ -66,7 +66,7 @@ model PostcardInOrder {
   orderId    Int
 }
 
-model Client {
+model User {
   id      Int     @unique
   city    String
   address String
