@@ -1,6 +1,8 @@
 import 'dotenv/config';
-import { Telegraf, Context } from 'telegraf';
-import { PrismaClient } from '@prisma/client';
+import { Telegraf } from 'telegraf';
+import launchBot from './bot/bot.service';
+import { PrismaService } from './db/prisma.service';
+import { MyContext, IPrismaService } from './types';
 
 const token: string | undefined = process.env.TOKEN;
 
@@ -8,21 +10,7 @@ if (!token) {
 	throw new Error('No token!');
 }
 
-const prisma: PrismaClient = new PrismaClient();
-const bot: Telegraf = new Telegraf(token);
+const bot = new Telegraf<MyContext>(token);
+const prismaService = new PrismaService();
 
-async function main(): Promise<void> {
-	try {
-		await prisma.$connect();
-
-		bot.command('start', (ctx: Context) => {
-			ctx.reply('Hello!');
-		});
-
-		bot.launch();
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-main();
+launchBot(bot, prismaService);
