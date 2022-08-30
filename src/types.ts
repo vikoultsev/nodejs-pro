@@ -7,15 +7,15 @@ export interface MyContext extends Context {
 	scene: Scenes.SceneContextScene<MyContext, Scenes.SceneSessionData>;
 }
 
-export enum SCENES {
+export enum ScenesList {
 	CITY = 'CITY',
 	ADDRESS = 'ADDRESS',
 	BOUQUET_LIST = 'BOUQUET_LIST',
 }
 
-export enum COMMANDS {
-	START = 'start',
-	CATALOG = 'catalog',
+export enum Commands {
+	start = 'start',
+	catalog = 'catalog',
 }
 
 export interface IPrismaService {
@@ -31,7 +31,7 @@ export interface IUserRepository {
 }
 
 export interface IUserService {
-	init: (userId: number) => Promise<User>;
+	upsert: (userId: number) => Promise<User>;
 	create: (user: User) => Promise<User>;
 	update: (user: User) => Promise<User>;
 }

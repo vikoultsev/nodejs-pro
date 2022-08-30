@@ -16,7 +16,7 @@ class UserService implements IUserService {
 		return this.userRepository.update(user);
 	}
 
-	public async init(userId: number): Promise<User> {
+	public async upsert(userId: number): Promise<User> {
 		const user = await this.userRepository.find(userId);
 		if (user) {
 			return user;

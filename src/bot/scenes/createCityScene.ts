@@ -1,8 +1,8 @@
 import { Scenes } from 'telegraf';
-import { MyContext, SCENES } from '../../types';
+import { MyContext, ScenesList } from '../../types';
 
 export default (): Scenes.BaseScene<MyContext> => {
-	const city = new Scenes.BaseScene<MyContext>(SCENES.CITY);
+	const city = new Scenes.BaseScene<MyContext>(ScenesList.CITY);
 	city.enter(async (ctx) => {
 		ctx.reply('Введите пожалуйста название города.');
 	});
@@ -11,7 +11,7 @@ export default (): Scenes.BaseScene<MyContext> => {
 			ctx.user.city = ctx.message.text;
 		}
 		ctx.reply('Введите пожалуйста адрес доставки.');
-		ctx.scene.enter(SCENES.ADDRESS);
+		ctx.scene.enter(ScenesList.ADDRESS);
 	});
 	return city;
 };

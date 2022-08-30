@@ -1,11 +1,10 @@
 import { User } from '@prisma/client';
-import { PrismaService } from '../../bot/prisma.service';
-import { IUserRepository } from '../../types';
+import { IUserRepository, IPrismaService } from '../../types';
 
 class UserRepository implements IUserRepository {
-	prismaService: PrismaService;
+	prismaService: IPrismaService;
 
-	constructor(prismaService: PrismaService) {
+	constructor(prismaService: IPrismaService) {
 		this.prismaService = prismaService;
 	}
 

@@ -3,7 +3,7 @@ import LocalSession from 'telegraf-session-local';
 import initStage from './scenes/initStage';
 import UserService from '../services/user/user.service';
 import UserRepository from '../services/user/user.repository';
-import { MyContext, SCENES, COMMANDS, IPrismaService } from '../types';
+import { MyContext, ScenesList, Commands, IPrismaService } from '../types';
 
 async function launchBot(bot: Telegraf<MyContext>, prismaService: IPrismaService): Promise<void> {
 	const stage = initStage(prismaService);
@@ -13,21 +13,21 @@ async function launchBot(bot: Telegraf<MyContext>, prismaService: IPrismaService
 	try {
 		await prismaService.connect();
 
-		bot.command(COMMANDS.START, (ctx: MyContext) => {
+		bot.command(Commands.start, (ctx: MyContext) => {
 			ctx.reply('Hello!');
 		});
 
-		bot.command(COMMANDS.CATALOG, async (ctx: MyContext) => {
+		bot.command(Commands.catalog, async (ctx: MyContext) => {
 			const userId = ctx.message?.from?.id;
 			if (userId) {
 				const userService = new UserService(new UserRepository(prismaService));
-				const user = await userService.init(userId);
+				const user = await userService.upsert(userId);
 				if (user.city && user.address) {
 					ctx.user = user;
-					ctx.scene.enter(SCENES.BOUQUET_LIST);
+					ctx.scene.enter(ScenesList.BOUQUET_LIST);
 				} else {
 					ctx.user = user;
-					ctx.scene.enter(SCENES.CITY);
+					ctx.scene.enter(ScenesList.CITY);
 				}
 			}
 		});

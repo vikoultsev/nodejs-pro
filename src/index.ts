@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { Telegraf } from 'telegraf';
 import launchBot from './bot/bot.service';
-import { PrismaService } from './bot/prisma.service';
-import { MyContext } from './types';
+import { PrismaService } from './db/prisma.service';
+import { MyContext, IPrismaService } from './types';
 
 const token: string | undefined = process.env.TOKEN;
 

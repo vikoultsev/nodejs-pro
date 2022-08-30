@@ -1,9 +1,8 @@
-import { Scenes, Markup } from 'telegraf';
-import { MyContext, SCENES } from '../../types';
-import { PrismaService } from '../prisma.service';
+import { Scenes } from 'telegraf';
+import { MyContext, ScenesList, IPrismaService } from '../../types';
 
-export default (prismaService: PrismaService): Scenes.BaseScene<MyContext> => {
-	const bouquetList = new Scenes.BaseScene<MyContext>(SCENES.BOUQUET_LIST);
+export default (prismaService: IPrismaService): Scenes.BaseScene<MyContext> => {
+	const bouquetList = new Scenes.BaseScene<MyContext>(ScenesList.BOUQUET_LIST);
 	bouquetList.enter(async (ctx) => {
 		const bouquets = await prismaService.client.bouquet.findMany({});
 		bouquets.forEach((bouquet) => {
